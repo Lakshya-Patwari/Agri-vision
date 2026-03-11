@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Crop Recommendation Result</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+background:#f3f5f6;
+margin:0;
+}
+
+.header{
+background:#2e7d32;
+color:white;
+text-align:center;
+padding:20px;
+font-size:24px;
+font-weight:bold;
+}
+
+.container{
+width:80%;
+margin:auto;
+margin-top:30px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+margin-bottom:25px;
+}
+
+h2{
+color:#2e7d32;
+margin-bottom:15px;
+}
+
+.crop{
+font-size:32px;
+font-weight:bold;
+color:#1b5e20;
+margin-bottom:10px;
+}
+
+/* nutrient boxes */
+
+.nutrients{
+display:flex;
+gap:15px;
+margin-top:10px;
+}
+
+.nutrient{
+padding:15px 20px;
+border-radius:8px;
+color:white;
+font-weight:bold;
+min-width:110px;
+text-align:center;
+font-size:16px;
+}
+
+/* colors */
+
+.low{
+background:#e53935;
+}
+
+.optimal{
+background:#43a047;
+}
+
+/* grid layout */
+
+.analysis-grid{
+display:flex;
+flex-direction:column;
+gap:25px;
+}   
+
+/* weather section */
+
+.weather-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.weather-box{
+background:#e8f5e9;
+padding:15px;
+border-radius:8px;
+text-align:center;
+}
+
+/* button */
+
+.button-box{
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+button{
+background:#2e7d32;
+color:white;
+border:none;
+padding:12px 25px;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
+}
+
+button:hover{
+background:#1b5e20;
+}
+
+ul,ol{
+padding-left:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+AGRI - VISION: Crop Recommendation System
+</div>
+
+<div class="container">
+
+<!-- Crop Result -->
+
+<div class="card">
+
+<h2>Recommended Crop</h2>
+
+<div class="crop">{{ prediction }}</div>
+
+<p><b>Model Accuracy:</b> {{ "%.2f"|format(accuracy*100) }} %</p>
+
+</div>
+
+
+<!-- Weather Comparison -->
+
+<div class="card">
+
+<h2>Weather Comparison</h2>
+
+<div class="weather-grid">
+
+<div class="weather-box">
+<h3>Current Weather (API)</h3>
+<p>Temperature: {{ "%.2f"|format(temperature) }} °C</p>
+<p>Humidity: {{ humidity }} %</p>
+</div>
+
+<div class="weather-box">
+<h3>Average Weather for {{ prediction }}</h3>
+<p>Temperature: {{ "%.2f"|format(avg_temp) }} °C</p>
+<p>Humidity: {{ "%.2f"|format(avg_humidity) }} %</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Soil Section -->
+
+<div class="card">
+
+<h2>Soil Nutrient Status</h2>
+
+<div class="analysis-grid">
+
+<div>
+
+<div class="nutrients">
+
+<div class="nutrient {% if N < 40 %}low{% else %}optimal{% endif %}">
+🧪 N: {{ N }}
+</div>
+
+<div class="nutrient {% if P < 40 %}low{% else %}optimal{% endif %}">
+🌱 P: {{ P }}
+</div>
+
+<div class="nutrient {% if K < 40 %}low{% else %}optimal{% endif %}">
+🍃 K: {{ K }}
+</div>
+
+<div class="nutrient
+{% if ph < 5.5 %}
+low
+{% elif ph > 7.5 %}
+low
+{% else %}
+optimal
+{% endif %}
+">
+⚗️ pH: {{ ph }}
+</div>
+
+</div>
+
+</div>
+
+<div>
+
+<h2>Soil Analysis</h2>
+
+<ul>
+{% for p in problems %}
+<li>{{ p }}</li>
+{% endfor %}
+</ul>
+
+</div>
+
+
+<div>
+
+<h2>Fertilizer Recommendations</h2>
+
+<ol>
+{% for tip in fertilizer_tips %}
+<li>{{ tip }}</li>
+{% endfor %}
+</ol>
+
+</div>
+
+
+<div class="button-box">
+
+<a href="/">
+<button>Predict Again</button>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>
